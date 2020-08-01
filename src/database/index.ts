@@ -13,7 +13,7 @@ class Database {
 
     init() {
         try {
-            const response = mongoose.connect(`mongodb+srv://${this.username}:${this.password}@YOUR_CLUSTER/${this.databasename}?retryWrites=true&w=majority`, {
+            const response = mongoose.connect(`mongodb+srv://${this.username}:${this.password}@YOUR_CLUSTERt/${this.databasename}?retryWrites=true&w=majority`, {
                 useFindAndModify: true,
                 useNewUrlParser: true,
                 useUnifiedTopology: true

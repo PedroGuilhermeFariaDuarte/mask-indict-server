@@ -8,6 +8,9 @@ import crypto from "crypto";
 // Types
 import { AnalyzeParams } from "ibm-watson/visual-recognition/v4";
 
+// Controllers
+import LocaleDetectedController from "../../app/controllers/LocaleDetectedController";
+
 class toAnalyze {
     file: ReadStream
     fileName: string
@@ -88,6 +91,24 @@ class toAnalyze {
             }
 
             console.log("Result Analyse", visualRecognitionResponse.result.images)
+
+            const userData = request.body.userData
+            request.body = {
+                idUser: userData._id,
+                ...userData,
+                analyse: visualRecognitionResponse.result
+            }
+
+            const saveNewLocale = await LocaleDetectedController.create(request)
+
+            console.log("Analyze salva no banco de dados: ", saveNewLocale)
+            if (saveNewLocale.code !== 200) {
+                response.status(200).json({
+                    code: 500, message: "Data of location not working",
+                    data: JSON.stringify(visualRecognitionResponse.result, null, 2)
+                })
+                return;
+            }
 
             response.status(200).json({
                 code: 200, message: "Your image was analyze with success",

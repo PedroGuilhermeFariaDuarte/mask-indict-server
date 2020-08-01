@@ -10,7 +10,7 @@ import watsonVisual from "@services/watson";
 
 const router = express.Router()
 
-router.route("/image/intelligence/analyze").post((request, response, next) => {
+router.route("/image/intelligence/analyze").post(Verify, (request, response, next) => {
     new watsonVisual(request.body.imageAnalyse).initAnalyze(request, response, next)
 })
 

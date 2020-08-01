@@ -28,7 +28,7 @@ export default async function Authenticate(request: Request, response: Response,
         const jwt = await setJWT(userAuthenticate)
 
         response.status(200).json({
-            code: 200, message: "Your was authenticate with succes", authorization: jwt,
+            code: 200, message: "Your was authenticate with success", authorization: jwt,
             personal: user
         })
     } catch (error) {
@@ -42,12 +42,20 @@ export async function Verify(request: Request, response: Response, next: NextFun
 
         const user = await UserModel.findOne({
             _id: { $eq: token.id }
+        }, {
+            _id: 1,
+            localization: 1
         })
 
         if (!user) response.status(200).json({
             code: 400,
             message: "It was not possible verify your authentication, token expired"
         })
+
+        request.body = {
+            ...request.body,
+            userData: user
+        }
 
         next()
     } catch (error) {
