@@ -9,11 +9,12 @@ class UserController {
         try {
             const newUser = await UserModel.create(request.body)
 
-            if (!newUser) response.status(500).json({ code: 10, message: "It was not possible to complete your registration" })
+            if (!newUser) response.status(200).json({ code: 500, message: "It was not possible to complete your registration" })
 
-            response.status(200).json({ code: 10, message: "Your resgistration was a success" })
+            response.status(200).json({ code: 200, message: "Your resgistration was a success", password: newUser?.password, username: newUser?.username })
         } catch (error) {
-            response.status(500).json({ code: 10, message: "It was not possible to complete your registration" })
+            console.log(error)
+            response.status(200).json({ code: 500, message: "It was not possible to complete your registration" })
         }
     }
 
@@ -60,15 +61,15 @@ class UserController {
                     $eq: new ObjectId(request.params.idUser)
                 }
             } : {
-                    $and: [
-                        {
-                            username: { $eq: request.params.username }
-                        },
-                        {
-                            password: { $eq: request.params.password }
-                        }
-                    ]
-                }
+                $and: [
+                    {
+                        username: { $eq: request.params.username }
+                    },
+                    {
+                        password: { $eq: request.params.password }
+                    }
+                ]
+            }
             const user = await UserModel.findOne(params)
 
             if (!user) response.status(400).json({ code: 10, message: "It was not possible to complete your search" })

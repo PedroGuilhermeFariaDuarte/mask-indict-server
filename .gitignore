@@ -11,3 +11,6 @@ build
 
 # Env
 .env
+
+# Temp
+services/watson/temp/**/*

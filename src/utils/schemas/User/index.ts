@@ -11,8 +11,6 @@ export const IDSchema = (id: any) => {
 }
 
 export default Yup.object().shape({
-    username: Yup.string(),
-    password: Yup.string(),
     name: Yup.string().required(),
     email: Yup.string().required(),
     age: Yup.number().required(),
